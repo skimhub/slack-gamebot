@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: slack-gamebot
+  namespace: staging
+spec:
+  revisionHistoryLimit: 5
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 4
+  template:
+    metadata:
+      labels:
+        app: slack-gamebot
+    spec:
+      containers:
+        - name: slack-gamebot-app
+          image: eu.gcr.io/core-1356/slack-bot:latest
+          imagePullPolicy: Always
+          ports:
+            - name: slack-gamebot-app-port
+              containerPort: 5000
+          env:
+            - name: RACK_ENV
+              value: production
+            - name: MONGO_URL
+              value: mongodb://mongodb:27017/gamebot
+            - name: SLACK_API_TOKEN
+              value: xoxb-163309262103-4fuzES7MbmTzPmjTJHGdZWEC
+        - name: slack-gamebot-db
+          image: mongo:2.4.14
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 200m
+              memory: 110Mi
+            limits:
+              cpu: 1000m
+              memory: 150Mi

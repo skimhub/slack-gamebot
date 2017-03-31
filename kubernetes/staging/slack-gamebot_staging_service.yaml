@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: slack-gamebot
+  name: slack-gamebot
+  namespace: staging
+spec:
+  ports:
+    - name: slack-gamebot
+      port: 5000
+  selector:
+    app: slack-gamebot
+  type: NodePort
