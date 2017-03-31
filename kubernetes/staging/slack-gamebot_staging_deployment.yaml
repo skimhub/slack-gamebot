@@ -20,17 +20,20 @@ spec:
           image: eu.gcr.io/core-1356/slack-bot:latest
           imagePullPolicy: Always
           ports:
-            - name: slack-gamebot-app-port
+            - name: gamebot-port
               containerPort: 5000
           env:
             - name: RACK_ENV
               value: production
             - name: MONGO_URL
-              value: mongodb://mongodb:27017/gamebot
+              value: mongodb://localhost:27017/gamebot
             - name: SLACK_API_TOKEN
               value: xoxb-163309262103-4fuzES7MbmTzPmjTJHGdZWEC
-        - name: slack-gamebot-db
+        - name: gamebot-db
           image: mongo:2.4.14
+          ports:
+            - name: gamebotdb-port
+              containerPort: 27017
           imagePullPolicy: Always
           resources:
             requests:
